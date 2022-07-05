@@ -82,7 +82,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         /*
         if (state == 1)
             characterSprite.y = characterSprite.y - (characterSprite.yVelocity * 15);*/
-        if (state == 0){
+        if (state == 0 && (event.getX() > 700 && event.getX() < 1500) && (event.getY() > 700 && event.getY() < 850)){
             characterSprite.y = 420;
             characterSprite.x = 200;
             obs1.yY = 0;
@@ -125,7 +125,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
     private void makeLevel() {
         characterSprite = new CharacterSprite
-                (getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.ball3), 240, 240));
+                (getResizedBitmap(BitmapFactory.decodeResource(getResources(),R.drawable.ball3), 200, 200));
         Bitmap bmp;
         Bitmap bmp2;
         int y;
@@ -180,7 +180,28 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw (Canvas canvas) {
 
         super.draw(canvas);
-        if (canvas != null) {
+        if (state == 0){
+            canvas.drawRGB(255,255,255);
+            Paint paint = new Paint();
+            paint.setColor(Color.BLACK);
+            paint.setTextSize(100);
+            canvas.drawText(text, 100, 100, paint);
+            paint.setTextSize(200);
+            canvas.drawText(text1, 600, 420, paint);
+            paint.setTextSize(100);
+            canvas.drawText(text4, 1450, 100, paint);
+            Paint paint2 = new Paint();
+            paint2.setColor(Color.BLACK);
+            paint2.setStrokeWidth(10);
+            paint2.setStyle(Paint.Style.FILL);
+            paint2.setColor(Color.BLUE);
+            canvas.drawRect(700, 850, 1500, 700, paint2);
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(100);
+            canvas.drawText(text2, 865, 800, paint);
+            paint.setColor(Color.BLACK);
+        }
+        else if (canvas != null) {
             canvas.drawRGB(255,255,255);
             Paint paint = new Paint();
             paint.setColor(Color.BLACK);
@@ -192,6 +213,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             canvas.drawText(text2, 750, 520, paint);
             paint.setTextSize(100);
             canvas.drawText(text4, 1450, 100, paint);
+
             characterSprite.draw(canvas);
             obs1.draw(canvas);
             obs2.draw(canvas);
@@ -204,6 +226,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
             obs9.draw(canvas);
             obs10.draw(canvas);
         }
+
     }
     public void logic(Canvas canvas) {
 
@@ -224,23 +247,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         for (int i = 0; i < obs.size(); i++) {
             //Detect if the character is touching one of the pipes
-            if ((characterSprite.x - 240 > obs.get(i).xX + 250)
-                    && !(characterSprite.y < obs.get(i).yY + (screenHeight / 2) - (gapHeight / 2) && characterSprite.x + 240 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500)
-                    && !(characterSprite.y + 240 > (screenHeight / 2) + (gapHeight / 2) + obs.get(i).yY && characterSprite.x + 240 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500)
-                    && !(characterSprite.y + 240 < 0) && !(characterSprite.y > screenHeight)){
+            if ((characterSprite.x - 200 > obs.get(i).xX + 250)
+                    && !(characterSprite.y < obs.get(i).yY + (screenHeight / 2) - (gapHeight / 2) && characterSprite.x + 200 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500)
+                    && !(characterSprite.y + 200 > (screenHeight / 2) + (gapHeight / 2) + obs.get(i).yY && characterSprite.x + 200 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500)
+                    && !(characterSprite.y + 200 < 0) && !(characterSprite.y > screenHeight)){
                 score = i + 1;
                 text = "Score = " + String.valueOf(score);
                 velocity = 15 + (i+1)*5;
             }
-            if (characterSprite.y < obs.get(i).yY + (screenHeight / 2) - (gapHeight / 2) && characterSprite.x + 240 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500) {
+            if (characterSprite.y < obs.get(i).yY + (screenHeight / 2) - (gapHeight / 2) && characterSprite.x + 200 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500) {
                 resetLevel(canvas);
-            } else if (characterSprite.y + 240 > (screenHeight / 2) + (gapHeight / 2) + obs.get(i).yY && characterSprite.x + 240 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500) {
+            } else if (characterSprite.y + 200 > (screenHeight / 2) + (gapHeight / 2) + obs.get(i).yY && characterSprite.x + 200 > obs.get(i).xX && characterSprite.x < obs.get(i).xX + 500) {
                 resetLevel(canvas);
             }
         }
 
         //Detect if the character has gone off the bottom or top of the screen
-        if (characterSprite.y + 240 < 0) {
+        if (characterSprite.y + 200 < 0) {
             resetLevel(canvas);
         }
         if (characterSprite.y > screenHeight) {
@@ -255,7 +278,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         }
         text = "Your Score = " + String.valueOf(score);
         text1 = "Game Over";
-        text2 = "Tap the screen to play again...";
+        text2 = "Play Again";
         text4 = "High Score = " + String.valueOf(highScore);
         characterSprite.y = 20000;
         characterSprite.x = 20000;
@@ -279,6 +302,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         obs9.xX = 10000;
         obs10.yY = 10000;
         obs10.xX = 10000;
+        draw(canvas);
     }
-
 }
