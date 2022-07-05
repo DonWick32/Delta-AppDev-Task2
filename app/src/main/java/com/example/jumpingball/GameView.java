@@ -242,7 +242,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         obs.add(obs9);
         obs.add(obs10);
 
-        if (characterSprite.x > 17000){
+        if (score == 10){
             resetLevel(canvas);
         }
         for (int i = 0; i < obs.size(); i++) {
